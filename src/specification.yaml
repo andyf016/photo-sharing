@@ -11,3 +11,72 @@ servers:
       domain:
         default: localhost:3000
         description: Domain
+paths:
+  /images:
+    get:
+      tags:
+      - "Photo"
+      summary: "Get a list"
+      description: ""
+      responses:
+        200:
+          description: "See a list of image URIs which have been previously uploaded" 
+          content:
+            application/json:
+              schema: 
+                type: "object"
+                properties:
+                  imageURIs:
+                    type: "array"
+                    items: 
+                      type: "string"
+                      
+                  statusCode:
+                    type: "integer"
+        405:
+          description: "Invalid input"
+    post:
+      tags:
+      - "Photo"
+      summary: "Upload Image"
+      description: ""
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              additionalProperties: false
+              type: "object"
+              properties:
+                image:
+                  type: "string"
+                  format: "binary"
+                
+               
+      responses:
+        200:
+          description: "OK"
+          headers:
+            Content-Location:
+              description: "The URI to get the image"
+              schema:
+                type: "string"
+                example: /users/1/picture
+          content:
+            application/json:
+              schema:
+                additionalProperties: false
+                type: "object"
+                properties:
+                  imageURI:
+                    type: "string"
+                  statusCode:
+                    type: "integer"
+         
+        404:
+          description: "Image not found"
+      
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
